@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'dashboard_page.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
           'sans-serif',
         ],
       ),
-      home: const LoginPage(),
+      home: const DashboardPage(),
     );
   }
 }
@@ -269,9 +271,15 @@ class _LoginPageState extends State<LoginPage> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                    'Login dengan: ${_emailController.text.isNotEmpty ? _emailController.text : "email@domain.com"}',
+                                    'Login berhasil sebagai: ${_emailController.text.isNotEmpty ? _emailController.text : "user@domain.com"}',
                                   ),
-                                  duration: const Duration(seconds: 2),
+                                  duration: const Duration(seconds: 1),
+                                ),
+                              );
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const DashboardPage(),
                                 ),
                               );
                             },
