@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'departure_city_page.dart';
 import 'main.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -280,12 +281,18 @@ class _DashboardPageState extends State<DashboardPage> {
                           value: _departureCity,
                           isPlaceholder:
                               _departureCity == 'Pilih kota keberangkatan',
-                          onTap: () {
-                            _showCityPicker(
-                              title: 'Pilih Kota Keberangkatan',
-                              onSelected: (city) =>
-                                  setState(() => _departureCity = city),
+                          onTap: () async {
+                            final result = await Navigator.push<String>(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => DepartureCityPage(
+                                  selectedCity: _departureCity,
+                                ),
+                              ),
                             );
+                            if (result != null && mounted) {
+                              setState(() => _departureCity = result);
+                            }
                           },
                         ),
 
