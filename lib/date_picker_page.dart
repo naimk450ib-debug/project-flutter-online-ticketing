@@ -16,7 +16,10 @@ Future<DateTime?> showCustomDatePicker({
       return Center(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 24.0,
+            ),
             child: DatePickerCard(
               initialDate: initialDate ?? DateTime(2026, 10, 22),
               currentDate: currentDate ?? DateTime(2026, 10, 19),
@@ -51,11 +54,7 @@ class DatePickerPage extends StatefulWidget {
   final DateTime? initialDate;
   final DateTime? currentDate;
 
-  const DatePickerPage({
-    super.key,
-    this.initialDate,
-    this.currentDate,
-  });
+  const DatePickerPage({super.key, this.initialDate, this.currentDate});
 
   @override
   State<DatePickerPage> createState() => _DatePickerPageState();
@@ -199,9 +198,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
           Positioned.fill(
             child: GestureDetector(
               onTap: () => Navigator.of(context).pop(),
-              child: Container(
-                color: const Color(0x66000000),
-              ),
+              child: Container(color: const Color(0x66000000)),
             ),
           ),
 
@@ -210,7 +207,10 @@ class _DatePickerPageState extends State<DatePickerPage> {
             child: Center(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0,
+                    vertical: 20.0,
+                  ),
                   child: DatePickerCard(
                     initialDate: _selectedDate,
                     currentDate: _currentDate,
@@ -238,10 +238,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
               decoration: const BoxDecoration(
                 color: Colors.white,
                 border: Border(
-                  top: BorderSide(
-                    color: Color(0xFFF0F1F5),
-                    width: 1.0,
-                  ),
+                  top: BorderSide(color: Color(0xFFF0F1F5), width: 1.0),
                 ),
               ),
               padding: const EdgeInsets.only(top: 10, bottom: 24),
@@ -473,10 +470,7 @@ class _DatePickerCardState extends State<DatePickerCard> {
               decoration: BoxDecoration(
                 color: const Color(0xFFFFF7F7),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: const Color(0xFFFFD1D3),
-                  width: 1.2,
-                ),
+                border: Border.all(color: const Color(0xFFFFD1D3), width: 1.2),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -669,11 +663,7 @@ class _DatePickerCardState extends State<DatePickerCard> {
               final dayNumber = cellIndex - startOffset + 1;
 
               if (dayNumber < 1 || dayNumber > daysInMonth) {
-                return const Expanded(
-                  child: SizedBox(
-                    height: 40,
-                  ),
-                );
+                return const Expanded(child: SizedBox(height: 40));
               }
 
               final cellDate = DateTime(year, month, dayNumber);
@@ -698,8 +688,8 @@ class _DatePickerCardState extends State<DatePickerCard> {
                         color: isSelected
                             ? const Color(0xFFFF383C)
                             : (isToday
-                                ? const Color(0xFFFFECEF)
-                                : Colors.transparent),
+                                  ? const Color(0xFFFFECEF)
+                                  : Colors.transparent),
                         shape: BoxShape.circle,
                         boxShadow: isSelected
                             ? const [
@@ -722,10 +712,10 @@ class _DatePickerCardState extends State<DatePickerCard> {
                             color: isSelected
                                 ? Colors.white
                                 : (isToday
-                                    ? const Color(0xFFFF383C)
-                                    : (isPast
-                                        ? const Color(0xFFA0AAB8)
-                                        : const Color(0xFF111827))),
+                                      ? const Color(0xFFFF383C)
+                                      : (isPast
+                                            ? const Color(0xFFA0AAB8)
+                                            : const Color(0xFF111827))),
                           ),
                         ),
                       ),
