@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'date_picker_page.dart';
 import 'departure_city_page.dart';
 import 'destination_city_page.dart';
 import 'main.dart';
@@ -20,6 +21,7 @@ class _DashboardPageState extends State<DashboardPage> {
   String _destinationCity = 'Pilih kota tujuan';
   String _dropOffPoint = 'Pilih drop off point';
   String _departureDate = 'Pilih tanggal keberangkatan';
+  DateTime? _selectedDateTime;
 
   void _swapCities() {
     setState(() {
@@ -41,27 +43,15 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   void _selectDate() async {
-    final DateTime? picked = await showDatePicker(
+    final DateTime? picked = await showCustomDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Color(0xFFFF383C),
-              onPrimary: Colors.white,
-              onSurface: Color(0xFF111827),
-            ),
-          ),
-          child: child!,
-        );
-      },
+      initialDate: _selectedDateTime ?? DateTime(2026, 10, 22),
+      currentDate: DateTime(2026, 10, 19),
     );
 
     if (picked != null) {
       setState(() {
+        _selectedDateTime = picked;
         const months = [
           'Jan',
           'Feb',
@@ -157,17 +147,20 @@ class _DashboardPageState extends State<DashboardPage> {
                       const SizedBox(width: 12),
 
                       // Brand Title
-                      const Text(
-                        'FN Online Ticketing',
-                        style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFF111827),
-                          letterSpacing: -0.3,
+                      const Expanded(
+                        child: Text(
+                          'FN Online Ticketing',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            color: Color(0xFF111827),
+                            letterSpacing: -0.3,
+                          ),
                         ),
                       ),
 
-                      const Spacer(),
+                      const SizedBox(width: 8),
 
                       // Profile Button
                       InkWell(
