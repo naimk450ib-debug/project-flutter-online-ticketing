@@ -30,16 +30,18 @@ class _DestinationCityPageState extends State<DestinationCityPage> {
 
   // List of destination cities matching the design
   final List<CityItem> _allCities = const [
-    CityItem(name: 'Denpasar', province: 'Bali'),
-    CityItem(name: 'Tabanan', province: 'Bali'),
-    CityItem(name: 'Gianyar', province: 'Bali'),
-    CityItem(name: 'Negara', province: 'Bali'),
-    CityItem(name: 'Singaraja', province: 'Bali'),
-    CityItem(name: 'Badung', province: 'Bali'),
-    CityItem(name: 'Klungkung', province: 'Bali'),
-    CityItem(name: 'Bangli', province: 'Bali'),
-    CityItem(name: 'Karangasem', province: 'Bali'),
-    CityItem(name: 'Mataram', province: 'Nusa Tenggara Barat'),
+    CityItem(name: 'Tangerang', province: 'Banten'),
+    CityItem(name: 'Bekasi Timur', province: 'Jawa Barat'),
+    CityItem(name: 'Pulogebang', province: 'Jakarta Timur'),
+    CityItem(name: 'Depok', province: 'Jawa Barat'),
+    CityItem(name: 'Tasikmalaya', province: 'Jawa Barat'),
+    CityItem(name: 'Bandung', province: 'Jawa Barat'),
+    CityItem(name: 'Blitar', province: 'Jawa Timur'),
+    CityItem(name: 'Karanganyar', province: 'Jawa Tengah'),
+    CityItem(name: 'Kediri', province: 'Jawa Timur'),
+    CityItem(name: 'Malang', province: 'Jawa Timur'),
+    CityItem(name: 'Surabaya', province: 'Jawa Timur'),
+    CityItem(name: 'Madiun', province: 'Jawa Timur'),
   ];
 
   List<CityItem> _filteredCities = [];
