@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ticketing_project/departure_city_page.dart';
+import 'package:ticketing_project/destination_city_page.dart';
 import 'package:ticketing_project/main.dart';
 
 void main() {
@@ -85,5 +86,58 @@ void main() {
     expect(find.text('Tiket Saya'), findsOneWidget);
     expect(find.text('Booking Saya'), findsOneWidget);
     expect(find.text('Akun'), findsOneWidget);
+  });
+
+  testWidgets('DestinationCityPage renders correctly matching uploaded UI', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: DestinationCityPage(
+          departureCity: 'Salatiga',
+          selectedDestination: 'Denpasar',
+        ),
+      ),
+    );
+
+    // Verify Header
+    expect(find.text('Kota Tujuan'), findsOneWidget);
+    expect(find.text('Tentukan tujuan perjalanan Anda'), findsOneWidget);
+
+    // Verify Search
+    expect(find.text('Cari kota tujuan'), findsOneWidget);
+
+    // Verify Departure Summary Card
+    expect(find.text('Berangkat dari'), findsOneWidget);
+    expect(find.text('Salatiga'), findsOneWidget);
+
+    // Verify Section Header
+    expect(find.text('PILIH KOTA TUJUAN'), findsOneWidget);
+
+    // Verify Cities shown in the design
+    expect(find.text('Denpasar'), findsOneWidget);
+    expect(find.text('Tabanan'), findsOneWidget);
+    expect(find.text('Gianyar'), findsOneWidget);
+    expect(find.text('Negara'), findsOneWidget);
+    expect(find.text('Singaraja'), findsOneWidget);
+
+    // Verify Bottom Info Card
+    expect(
+      find.text('Drop off point dapat dipilih setelah Anda menentukan kota tujuan.'),
+      findsOneWidget,
+    );
+
+    // Test Search filter
+    await tester.enterText(find.byType(TextField), 'Tabanan');
+    await tester.pump();
+
+    // Verify card is found and other cities are filtered out
+    expect(find.widgetWithText(InkWell, 'Tabanan'), findsOneWidget);
+    expect(find.text('Denpasar'), findsNothing);
   });
 }

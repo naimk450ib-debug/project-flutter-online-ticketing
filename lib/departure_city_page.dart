@@ -6,19 +6,13 @@ class CityItem {
   final String name;
   final String province;
 
-  const CityItem({
-    required this.name,
-    required this.province,
-  });
+  const CityItem({required this.name, required this.province});
 }
 
 class DepartureCityPage extends StatefulWidget {
   final String selectedCity;
 
-  const DepartureCityPage({
-    super.key,
-    this.selectedCity = 'Salatiga',
-  });
+  const DepartureCityPage({super.key, this.selectedCity = 'Salatiga'});
 
   @override
   State<DepartureCityPage> createState() => _DepartureCityPageState();
@@ -44,7 +38,8 @@ class _DepartureCityPageState extends State<DepartureCityPage> {
   @override
   void initState() {
     super.initState();
-    _currentSelected = widget.selectedCity.isNotEmpty &&
+    _currentSelected =
+        widget.selectedCity.isNotEmpty &&
             widget.selectedCity != 'Pilih kota keberangkatan'
         ? widget.selectedCity
         : 'Salatiga';
@@ -67,9 +62,11 @@ class _DepartureCityPageState extends State<DepartureCityPage> {
         _filteredCities = List.from(_allCities);
       } else {
         _filteredCities = _allCities
-            .where((city) =>
-                city.name.toLowerCase().contains(query) ||
-                city.province.toLowerCase().contains(query))
+            .where(
+              (city) =>
+                  city.name.toLowerCase().contains(query) ||
+                  city.province.toLowerCase().contains(query),
+            )
             .toList();
       }
     });
@@ -376,7 +373,8 @@ class _DepartureCityPageState extends State<DepartureCityPage> {
                           }
 
                           final city = _filteredCities[index];
-                          final isSelected = city.name.toLowerCase() ==
+                          final isSelected =
+                              city.name.toLowerCase() ==
                               _currentSelected.toLowerCase();
 
                           return Padding(
@@ -399,9 +397,7 @@ class _DepartureCityPageState extends State<DepartureCityPage> {
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
-          border: Border(
-            top: BorderSide(color: Color(0xFFF0F1F5), width: 1.0),
-          ),
+          border: Border(top: BorderSide(color: Color(0xFFF0F1F5), width: 1.0)),
           boxShadow: [
             BoxShadow(
               color: Color(0x0A000000),
@@ -477,9 +473,7 @@ class _DepartureCityPageState extends State<DepartureCityPage> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: isSelected
-              ? const Color(0xFFFFD1D3)
-              : const Color(0xFFF0F1F5),
+          color: isSelected ? const Color(0xFFFFD1D3) : const Color(0xFFF0F1F5),
           width: isSelected ? 1.4 : 1.0,
         ),
         boxShadow: isSelected

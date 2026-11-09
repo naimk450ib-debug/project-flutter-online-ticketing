@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'departure_city_page.dart';
+import 'destination_city_page.dart';
 import 'main.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -371,12 +372,22 @@ class _DashboardPageState extends State<DashboardPage> {
                           value: _destinationCity,
                           isPlaceholder:
                               _destinationCity == 'Pilih kota tujuan',
-                          onTap: () {
-                            _showCityPicker(
-                              title: 'Pilih Kota Tujuan',
-                              onSelected: (city) =>
-                                  setState(() => _destinationCity = city),
+                          onTap: () async {
+                            final result = await Navigator.push<String>(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => DestinationCityPage(
+                                  departureCity: _departureCity ==
+                                          'Pilih kota keberangkatan'
+                                      ? 'Salatiga'
+                                      : _departureCity,
+                                  selectedDestination: _destinationCity,
+                                ),
+                              ),
                             );
+                            if (result != null && mounted) {
+                              setState(() => _destinationCity = result);
+                            }
                           },
                         ),
 
@@ -587,65 +598,6 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
         ],
       ),
-    );
-  }
-
-  void _showCityPicker({
-    required String title,
-    required ValueChanged<String> onSelected,
-  }) {
-    final cities = [
-      'Jakarta',
-      'Surabaya',
-      'Bandung',
-      'Semarang',
-      'Yogyakarta',
-      'Denpasar',
-      'Malang',
-      'Solo',
-    ];
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF111827),
-                  ),
-                ),
-              ),
-              const Divider(height: 1),
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: cities.length,
-                  itemBuilder: (context, index) {
-                    final city = cities[index];
-                    return ListTile(
-                      title: Text(city),
-                      onTap: () {
-                        onSelected(city);
-                        Navigator.pop(context);
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 
