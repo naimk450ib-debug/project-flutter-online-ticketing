@@ -31,6 +31,7 @@ class _DepartureCityPageState extends State<DepartureCityPage> {
     CityItem(name: 'Bekasi', province: 'Jawa Barat'),
     CityItem(name: 'Jakarta', province: 'Jakarta'),
     CityItem(name: 'Tangerang', province: 'Banten'),
+    CityItem(name: 'Blitar', province: 'Jawa Timur'),
   ];
 
   List<CityItem> _filteredCities = [];

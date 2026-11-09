@@ -36,7 +36,7 @@ class _DestinationCityPageState extends State<DestinationCityPage> {
     CityItem(name: 'Depok', province: 'Jawa Barat'),
     CityItem(name: 'Tasikmalaya', province: 'Jawa Barat'),
     CityItem(name: 'Bandung', province: 'Jawa Barat'),
-    CityItem(name: 'Semarang', province: 'Jawa Tengah'),
+    CityItem(name: 'Blitar', province: 'Jawa Timur'),
     CityItem(name: 'Karanganyar', province: 'Jawa Tengah'),
     CityItem(name: 'Kediri', province: 'Jawa Timur'),
     CityItem(name: 'Malang', province: 'Jawa Timur'),
