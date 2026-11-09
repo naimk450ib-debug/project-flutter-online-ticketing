@@ -25,12 +25,12 @@ class _DepartureCityPageState extends State<DepartureCityPage> {
 
   // List of departure cities exactly as shown in UI design
   final List<CityItem> _allCities = const [
-    CityItem(name: 'Salatiga', province: 'Jawa Tengah'),
+    CityItem(name: 'Malang', province: 'Jawa Timur'),
     CityItem(name: 'Semarang', province: 'Jawa Tengah'),
     CityItem(name: 'Solo', province: 'Jawa Tengah'),
-    CityItem(name: 'Boyolali', province: 'Jawa Tengah'),
-    CityItem(name: 'Kediri', province: 'Jawa Timur'),
-    CityItem(name: 'Denpasar', province: 'Bali'),
+    CityItem(name: 'Bekasi', province: 'Jawa Barat'),
+    CityItem(name: 'Jakarta', province: 'Jakarta'),
+    CityItem(name: 'Tangerang', province: 'Banten'),
   ];
 
   List<CityItem> _filteredCities = [];
