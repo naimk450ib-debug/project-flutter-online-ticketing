@@ -237,7 +237,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
                   // Subtitle
                   const Text(
-                    'Perjalanan nyaman bersama Mtrans.',
+                    'Perjalanan nyaman bersama FN Online Ticketing.',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,

@@ -146,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   // Subtitle
                   const Text(
-                    'Masuk untuk melanjutkan ke dashboard\nperjalanan Anda.',
+                    'Masuk untuk melanjutkan ke dashboard kita\nNikmati perjalanan Anda.',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
@@ -192,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         // Card Subtitle
                         const Text(
-                          'Gunakan email atau lanjutkan dengan akun\nlain.',
+                          'Gunakan email atau lanjutkan dengan akun lain.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 13,
