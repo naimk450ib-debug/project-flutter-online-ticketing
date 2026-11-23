@@ -4,6 +4,7 @@ import 'date_picker_page.dart';
 import 'departure_city_page.dart';
 import 'destination_city_page.dart';
 import 'main.dart';
+import 'trip_tickets_page.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -15,13 +16,13 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   int _selectedBottomNavIndex = 0;
 
-  // Selected values for the booking form
-  String _departureCity = 'Pilih kota keberangkatan';
-  String _pickupPoint = 'Pilih pickup point';
-  String _destinationCity = 'Pilih kota tujuan';
-  String _dropOffPoint = 'Pilih drop off point';
-  String _departureDate = 'Pilih tanggal keberangkatan';
-  DateTime? _selectedDateTime;
+  // Selected values for the booking form - default values matching Image 1
+  String _departureCity = 'Salatiga';
+  String _pickupPoint = 'Taman Cerdas Salatiga';
+  String _destinationCity = 'Denpasar';
+  String _dropOffPoint = 'Pulau Moyo';
+  String _departureDate = 'Kamis, 22 Oktober 2026';
+  DateTime? _selectedDateTime = DateTime(2026, 10, 22);
 
   void _swapCities() {
     setState(() {
@@ -52,24 +53,48 @@ class _DashboardPageState extends State<DashboardPage> {
     if (picked != null) {
       setState(() {
         _selectedDateTime = picked;
-        const months = [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
+        const dayNames = [
+          'Senin',
+          'Selasa',
+          'Rabu',
+          'Kamis',
+          'Jumat',
+          'Sabtu',
+          'Minggu',
+        ];
+        const monthNames = [
+          'Januari',
+          'Februari',
+          'Maret',
+          'April',
           'Mei',
-          'Jun',
-          'Jul',
-          'Agu',
-          'Sep',
-          'Okt',
-          'Nov',
-          'Des',
+          'Juni',
+          'Juli',
+          'Agustus',
+          'September',
+          'Oktober',
+          'November',
+          'Desember',
         ];
         _departureDate =
-            '${picked.day} ${months[picked.month - 1]} ${picked.year}';
+            '${dayNames[picked.weekday - 1]}, ${picked.day} ${monthNames[picked.month - 1]} ${picked.year}';
       });
     }
+  }
+
+  void _navigateToTripTickets() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => TripTicketsPage(
+          departureCity: _departureCity,
+          destinationCity: _destinationCity,
+          pickupPoint: _pickupPoint,
+          dropOffPoint: _dropOffPoint,
+          departureDate: _departureDate,
+        ),
+      ),
+    );
   }
 
   @override
@@ -301,10 +326,11 @@ class _DashboardPageState extends State<DashboardPage> {
                           ),
                           label: 'Pickup Point',
                           value: _pickupPoint,
-                          isPlaceholder: true,
+                          isPlaceholder: _pickupPoint == 'Pilih pickup point',
                           onTap: () {
                             _showLocationPicker(
                               title: 'Pilih Pickup Point',
+                              isPickup: true,
                               onSelected: (loc) =>
                                   setState(() => _pickupPoint = loc),
                             );
@@ -395,10 +421,11 @@ class _DashboardPageState extends State<DashboardPage> {
                           ),
                           label: 'Drop Off Point',
                           value: _dropOffPoint,
-                          isPlaceholder: true,
+                          isPlaceholder: _dropOffPoint == 'Pilih drop off point',
                           onTap: () {
                             _showLocationPicker(
                               title: 'Pilih Drop Off Point',
+                              isPickup: false,
                               onSelected: (loc) =>
                                   setState(() => _dropOffPoint = loc),
                             );
@@ -438,18 +465,9 @@ class _DashboardPageState extends State<DashboardPage> {
                             ],
                           ),
                           child: ElevatedButton(
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Mencari tiket dari $_departureCity ke $_destinationCity ($_departureDate)...',
-                                  ),
-                                  duration: const Duration(seconds: 2),
-                                ),
-                              );
-                            },
+                            onPressed: _navigateToTripTickets,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFFF383C),
+                              backgroundColor: const Color(0xFFFF2D36),
                               foregroundColor: Colors.white,
                               elevation: 0,
                               shape: RoundedRectangleBorder(
@@ -457,16 +475,22 @@ class _DashboardPageState extends State<DashboardPage> {
                               ),
                               padding: EdgeInsets.zero,
                             ),
-                            child: const Row(
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  Icons.search,
-                                  color: Colors.white,
-                                  size: 20,
+                                Container(
+                                  width: 17,
+                                  height: 17,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 1.8,
+                                    ),
+                                  ),
                                 ),
-                                SizedBox(width: 8),
-                                Text(
+                                const SizedBox(width: 8),
+                                const Text(
                                   'Cari Tiket',
                                   style: TextStyle(
                                     fontSize: 15,
@@ -476,6 +500,50 @@ class _DashboardPageState extends State<DashboardPage> {
                                 ),
                               ],
                             ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 18),
+
+                  // Support section: ▪ ▪ Butuh bantuan? Hubungi Support
+                  InkWell(
+                    onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Menghubungi Customer Support...'),
+                          duration: Duration(milliseconds: 1500),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 4,
+                          height: 7,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFF383C),
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Container(
+                          width: 4,
+                          height: 7,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFF383C),
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Text(
+                          'Butuh bantuan? Hubungi Support',
+                          style: TextStyle(
+                            fontSize: 12.5,
+                            color: Color(0xFF6B7280),
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
@@ -505,37 +573,53 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
         child: SafeArea(
           top: false,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildNavItem(
-                  index: 0,
-                  icon: Icons.home_outlined,
-                  label: 'Beranda',
-                  isActive: _selectedBottomNavIndex == 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildNavItem(
+                      index: 0,
+                      icon: Icons.home_outlined,
+                      label: 'Beranda',
+                      isActive: _selectedBottomNavIndex == 0,
+                    ),
+                    _buildNavItem(
+                      index: 1,
+                      icon: Icons.confirmation_number_outlined,
+                      label: 'Tiket Saya',
+                      isActive: _selectedBottomNavIndex == 1,
+                    ),
+                    _buildNavItem(
+                      index: 2,
+                      icon: Icons.assignment_outlined,
+                      label: 'Booking Saya',
+                      isActive: _selectedBottomNavIndex == 2,
+                    ),
+                    _buildNavItem(
+                      index: 3,
+                      icon: Icons.account_circle_outlined,
+                      label: 'Akun',
+                      isActive: _selectedBottomNavIndex == 3,
+                    ),
+                  ],
                 ),
-                _buildNavItem(
-                  index: 1,
-                  icon: Icons.confirmation_number_outlined,
-                  label: 'Tiket Saya',
-                  isActive: _selectedBottomNavIndex == 1,
+              ),
+              Center(
+                child: Container(
+                  width: 134,
+                  height: 4.5,
+                  margin: const EdgeInsets.only(bottom: 6),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFD1D5DB),
+                    borderRadius: BorderRadius.circular(3),
+                  ),
                 ),
-                _buildNavItem(
-                  index: 2,
-                  icon: Icons.assignment_outlined,
-                  label: 'Booking Saya',
-                  isActive: _selectedBottomNavIndex == 2,
-                ),
-                _buildNavItem(
-                  index: 3,
-                  icon: Icons.account_circle_outlined,
-                  label: 'Akun',
-                  isActive: _selectedBottomNavIndex == 3,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -596,15 +680,24 @@ class _DashboardPageState extends State<DashboardPage> {
 
   void _showLocationPicker({
     required String title,
+    required bool isPickup,
     required ValueChanged<String> onSelected,
   }) {
-    final locations = [
-      'Terminal Utama',
-      'Pool Pusat',
-      'Rest Area KM 57',
-      'Stasiun Barat',
-      'Halte Bandara',
-    ];
+    final locations = isPickup
+        ? const [
+            'Taman Cerdas Salatiga',
+            'Terminal Tingkir Salatiga',
+            'Pool Salatiga',
+            'Terminal Terboyo Semarang',
+            'Pool Solo',
+          ]
+        : const [
+            'Pulau Moyo',
+            'Terminal Mengwi Denpasar',
+            'Pool Denpasar',
+            'Bandara Ngurah Rai',
+            'Sanur Denpasar',
+          ];
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
