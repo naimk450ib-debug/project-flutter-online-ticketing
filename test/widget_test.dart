@@ -4,6 +4,7 @@ import 'package:ticketing_project/date_picker_page.dart';
 import 'package:ticketing_project/departure_city_page.dart';
 import 'package:ticketing_project/destination_city_page.dart';
 import 'package:ticketing_project/main.dart';
+import 'package:ticketing_project/trip_tickets_page.dart';
 
 void main() {
   testWidgets('Dashboard page renders correctly smoke test', (WidgetTester tester) async {
@@ -20,11 +21,19 @@ void main() {
     // Verify Bus ticket booking card
     expect(find.text('Pesan tiket bus'), findsOneWidget);
     expect(find.text('Kota Keberangkatan'), findsOneWidget);
+    expect(find.text('Salatiga'), findsOneWidget);
     expect(find.text('Pickup Point'), findsOneWidget);
+    expect(find.text('Taman Cerdas Salatiga'), findsOneWidget);
     expect(find.text('Kota Tujuan'), findsOneWidget);
+    expect(find.text('Denpasar'), findsOneWidget);
     expect(find.text('Drop Off Point'), findsOneWidget);
+    expect(find.text('Pulau Moyo'), findsOneWidget);
     expect(find.text('Tanggal Keberangkatan'), findsOneWidget);
+    expect(find.text('Kamis, 22 Oktober 2026'), findsOneWidget);
     expect(find.text('Cari Tiket'), findsOneWidget);
+
+    // Verify Support note
+    expect(find.text('Butuh bantuan? Hubungi Support'), findsOneWidget);
 
     // Verify Bottom Navigation items
     expect(find.text('Beranda'), findsOneWidget);
@@ -232,14 +241,117 @@ void main() {
     // Verify custom date picker modal opens
     expect(find.text('Pilih Tanggal'), findsNWidgets(2));
     expect(find.text('TANGGAL KEBERANGKATAN'), findsOneWidget);
-    expect(find.text('Kamis, 22 Oktober 2026'), findsOneWidget);
+    expect(find.text('Kamis, 22 Oktober 2026'), findsNWidgets(2)); // Dashboard + Modal
+
+    // Tap day 23 to select a different date
+    await tester.tap(find.text('23'));
+    await tester.pump();
+
+    // Verify modal top card updates to Jumat, 23 Oktober 2026
+    expect(find.text('Jumat, 23 Oktober 2026'), findsOneWidget);
 
     // Tap "Pilih Tanggal" button inside modal
     final selectButton = find.widgetWithText(InkWell, 'Pilih Tanggal');
     await tester.tap(selectButton);
     await tester.pumpAndSettle();
 
-    // Verify modal dismissed and dashboard updated
-    expect(find.text('22 Okt 2026'), findsOneWidget);
+    // Verify modal dismissed and dashboard updated to Jumat, 23 Oktober 2026
+    expect(find.text('Jumat, 23 Oktober 2026'), findsOneWidget);
+  });
+
+  testWidgets('TripTicketsPage renders correctly matching uploaded UI', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: TripTicketsPage(
+          departureCity: 'Salatiga',
+          destinationCity: 'Denpasar',
+          departureDate: 'Kamis, 22 Oktober 2026',
+        ),
+      ),
+    );
+
+    // Verify Header Bar
+    expect(find.text('Tiket Perjalanan'), findsOneWidget);
+    expect(find.byIcon(Icons.arrow_back), findsOneWidget);
+
+    // Verify Route & Filter
+    expect(find.text('Salatiga'), findsNWidgets(2)); // in route title and in card
+    expect(find.text('Denpasar'), findsNWidgets(2)); // in route title and in card
+    expect(find.byIcon(Icons.arrow_forward_rounded), findsNWidgets(2)); // in route title and in seat button
+    expect(find.byIcon(Icons.tune_rounded), findsOneWidget);
+
+    // Verify Date
+    expect(find.text('Kamis, 22 Oktober 2026'), findsOneWidget);
+    expect(find.byIcon(Icons.calendar_month_outlined), findsOneWidget);
+
+    // Verify Sorting Section
+    expect(find.text('Urutkan berdasarkan'), findsOneWidget);
+    expect(find.text('Harga ↑'), findsOneWidget);
+    expect(find.text('Keberangkatan'), findsOneWidget);
+    expect(find.text('Durasi'), findsOneWidget);
+
+    // Verify Available Trips Section
+    expect(find.text('Perjalanan tersedia'), findsOneWidget);
+
+    // Verify Ticket Card
+    expect(find.text('SMG'), findsOneWidget);
+    expect(find.text('STADIUM SLEEPER I'), findsOneWidget);
+    expect(find.text('SEMARANG–SALATIGA–DENPASAR I'), findsOneWidget);
+    expect(find.text('13:43'), findsOneWidget);
+    expect(find.text('16j 30m'), findsOneWidget);
+    expect(find.text('06:13'), findsOneWidget);
+    expect(find.text('+1 hari'), findsOneWidget);
+
+    // Verify Price and Seat Button
+    expect(find.textContaining('Rp600.000'), findsOneWidget);
+    expect(find.textContaining('/seat'), findsOneWidget);
+    expect(find.text('Seat Tersedia'), findsOneWidget);
+
+    // Verify Disclaimer and Support Note
+    expect(
+      find.text('Waktu tiba merupakan estimasi. Lihat fasilitas dan titik keberangkatan pada detail perjalanan.'),
+      findsOneWidget,
+    );
+    expect(find.text('Butuh bantuan? Hubungi Support'), findsOneWidget);
+
+    // Test sort button interaction
+    await tester.tap(find.text('Keberangkatan'));
+    await tester.pump();
+    expect(find.text('Harga'), findsOneWidget); // Inactive state without arrow
+  });
+
+  testWidgets('Dashboard navigates to TripTicketsPage when tapping Cari Tiket', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(const MyApp());
+
+    // Tap "Cari Tiket" button on Dashboard
+    await tester.tap(find.text('Cari Tiket'));
+    await tester.pumpAndSettle();
+
+    // Verify on TripTicketsPage
+    expect(find.text('Tiket Perjalanan'), findsOneWidget);
+    expect(find.text('STADIUM SLEEPER I'), findsOneWidget);
+    expect(find.text('Seat Tersedia'), findsOneWidget);
+
+    // Tap back button
+    await tester.tap(find.byIcon(Icons.arrow_back));
+    await tester.pumpAndSettle();
+
+    // Verify back on DashboardPage
+    expect(find.text('Mau ke mana hari ini?'), findsOneWidget);
+    expect(find.text('Pesan tiket bus'), findsOneWidget);
   });
 }
